@@ -143,7 +143,8 @@ def _raw_to_full(raw_report):
             c_report = rep.Report[_ns('counter', 'Reports')].Report
         except AttributeError:
             logger.error("report not found in XML: %s", raw_report)
-            raise pycounter.exceptions.SushiException(raw=raw_report)
+            raise pycounter.exceptions.SushiException(raw=raw_report
+                                                      xml=o_root)
     logger.debug("COUNTER report: %s", etree.tostring(c_report))
     start_date = datetime.datetime.strptime(
         root.find('.//%s' % _ns('sushi', 'Begin')).text,

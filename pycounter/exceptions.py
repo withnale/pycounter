@@ -13,8 +13,9 @@ class UnknownReportTypeError(PycounterException):
 
 class SushiException(PycounterException):
     """Base class for SUSHI-related exceptions"""
-    def __init__(self, raw=None, message=None):
+    def __init__(self, raw=None, message=None, xml=None):
         self.raw = raw
+        self.xml = xml
         self.message = message
 
 
