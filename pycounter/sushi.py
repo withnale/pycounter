@@ -132,7 +132,7 @@ def _raw_to_full(raw_report):
         root = etree.fromstring(raw_report)
     except etree.XMLSyntaxError as e:
         logger.error("XML syntax error: %s", raw_report)
-        raise pycounter.exceptions.SushiException(e)
+        raise pycounter.exceptions.SushiException(e, raw=raw_report)
     o_root = objectify.fromstring(raw_report)
     rep = None
     try:
@@ -143,7 +143,7 @@ def _raw_to_full(raw_report):
             c_report = rep.Report[_ns('counter', 'Reports')].Report
         except AttributeError:
             logger.error("report not found in XML: %s", raw_report)
-            raise pycounter.exceptions.SushiException
+            raise pycounter.exceptions.SushiException(raw=raw_report)
     logger.debug("COUNTER report: %s", etree.tostring(c_report))
     start_date = datetime.datetime.strptime(
         root.find('.//%s' % _ns('sushi', 'Begin')).text,
