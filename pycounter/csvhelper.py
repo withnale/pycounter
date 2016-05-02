@@ -68,21 +68,17 @@ class UnicodeReader(six.Iterator):
 # noinspection PyUnusedLocal
 class UnicodeWriter(object):
     """CSV writer that can handle unicode"""
-    def __init__(self, filename=None, fileobj=None, dialect=csv.excel,
+    def __init__(self, filename, dialect=csv.excel,
                  encoding="utf-8", lineterminator='\n', **kwargs):
-        if filename == None and fileobj == None:
-	    raise RuntimeError
         self.filename = filename
         self.dialect = dialect
         self.encoding = encoding
         self.lineterminator = lineterminator
         self.kwargs = kwargs
         self.writer = None
-        self.fileobj = fileobj
+        self.fileobj = None
 
     def __enter__(self):
-        if self.fileobj:
-            pass
         if six.PY3:
             self.fileobj = open(self.filename, 'wt',
                                 encoding=self.encoding, newline='')
@@ -94,8 +90,7 @@ class UnicodeWriter(object):
         return self
 
     def __exit__(self, type_, value, traceback):
-        if self.filename: 
-            self.fileobj.close()
+        self.fileobj.close()
 
     def writerow(self, row):
         """write a row to the output
@@ -103,7 +98,7 @@ class UnicodeWriter(object):
         :param row: list of cells to write to the file
         """
         if not six.PY3:
-            row = [s.encode(self.encoding) for s in row]
+            row = [(s or '').encode(self.encoding) for s in row]
         self.writer.writerow(row)
 
     def writerows(self, rows):
