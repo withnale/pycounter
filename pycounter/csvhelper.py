@@ -68,15 +68,18 @@ class UnicodeReader(six.Iterator):
 # noinspection PyUnusedLocal
 class UnicodeWriter(object):
     """CSV writer that can handle unicode"""
-    def __init__(self, filename=None, fileobj=None, dialect=csv.excel, 
+    def __init__(self, filename, dialect=csv.excel, 
                  encoding="utf-8", lineterminator='\n', **kwargs):
-        self.filename = filename
         self.dialect = dialect
         self.encoding = encoding
         self.lineterminator = lineterminator
         self.kwargs = kwargs
         self.writer = None
-        self.fileobj = fileobj
+        if type(filename) is str:
+            self.filename = filename
+            self.fileobj = None
+        else:
+            self.fileobj = fileobj
 
     def __enter__(self):
         if self.fileobj is None:

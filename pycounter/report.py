@@ -93,16 +93,6 @@ class CounterReport(object):
         else:
             raise PycounterException("unknown file type %s" % format_)
 
-    def write_tsv_to_fileobj(self, fileobj):
-        """
-        Output report to a COUNTER 4 TSV file.
-
-        :param path: location to write file
-        """
-        lines = self.as_generic()
-        with csvhelper.UnicodeWriter(fileobj=fileobj, delimiter='\t') as writer:
-            writer.writerows(lines)
-
     def write_tsv(self, path):
         """
         Output report to a COUNTER 4 TSV file.
