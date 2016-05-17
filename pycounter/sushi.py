@@ -130,9 +130,9 @@ def _raw_to_full(raw_report):
     """
     try:
         root = etree.fromstring(raw_report)
-    except etree.XMLSyntaxError as e:
+    except etree.XMLSyntaxError:
         logger.error("XML syntax error: %s", raw_report)
-        raise pycounter.exceptions.SushiException(e, 
+        raise pycounter.exceptions.SushiException(
             message="XML syntax error",
             raw=raw_report)
     o_root = objectify.fromstring(raw_report)
